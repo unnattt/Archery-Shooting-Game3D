@@ -5,51 +5,44 @@ using UnityEngine.UI;
 
 public class FirstPersonCameraController : MonoBehaviour
 {
-    public Transform playerBody;
-    public float mouseSensitivity = 100f;
-    //public Image crosshairImage;
-    //float xAxisClamp = 0.0f;
+    [SerializeField] BowController arrowController;
+    [SerializeField] Transform playerBody;
+    [SerializeField] float mouseSensitivity = 100f;   
+    [SerializeField] float minAngle;
+    [SerializeField] float maxAngle;
+
     private float rotationX;
     private float rotationY;
 
-    public float minAngle;
-    public float maxAngle;
 
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
     }
-
-    //for mouse Control
+   
     void Update()
-    {        
+    {
         float mouseX = Input.GetAxis("Mouse X") * Time.deltaTime * mouseSensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * Time.deltaTime * mouseSensitivity;
 
         rotationY += mouseX;
         rotationX -= mouseY;
         rotationY = Mathf.Clamp(rotationY, minAngle, maxAngle);
-        rotationX = Mathf.Clamp(rotationX, -15f, 20f);
-
-        //transform.rotation = Quaternion.Euler(rotationX,rotationY, 0);
-        playerBody.rotation = Quaternion.Euler(rotationX, rotationY, 0);      
-    }
-
-    private void LateUpdate()
-    {
+        rotationX = Mathf.Clamp(rotationX, minAngle, maxAngle);
+        
+        playerBody.rotation = Quaternion.Euler(rotationX, rotationY, 0);
+        //if (arrowController.temp == null) return;
+        //arrowController.temp.transform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
         Quaternion rotation = Quaternion.Euler(rotationX, rotationY, 0);
         transform.rotation = rotation;
-        //UpdateCrosshairPosition();sa
     }
 
-    //private void UpdateCrosshairPosition()
+    //private void LateUpdate()
     //{
-    //    if (crosshairImage != null)
-    //    {
-    //        Vector3 screenCenter = new Vector3(Screen.width / 2, Screen.height / 2);
-    //        crosshairImage.rectTransform.position = screenCenter;
-    //    }
+               
     //}
+
+   
 }
 
 
