@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - ArcheryBoard
+  - PointBetweenStartAndEnd
+  - Arrow
   layers:
   - Default
   - TransparentFX

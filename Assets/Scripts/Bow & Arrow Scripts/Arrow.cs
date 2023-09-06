@@ -3,30 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
-{
-    [SerializeField] Transform tips;
+{    
     Rigidbody arrowRB;
-    [HideInInspector]
-    public bool isRelease;
-
+    CapsuleCollider frontCollider;
+    BoxCollider backCollider;
     void Start()
     {
+        frontCollider = GetComponent<CapsuleCollider>();
+        backCollider = GetComponent<BoxCollider>();
         arrowRB = GetComponent<Rigidbody>();
         arrowRB.isKinematic = true;
-    }
-
-    void Update()
-    {
-        if (isRelease)
-            ArrorDestroyer();       
+        frontCollider.enabled = false;
+        backCollider.enabled = true;
     }
 
     public void Thrower(Vector3 force)
     {
         arrowRB.isKinematic = false;
-        arrowRB.AddForce(force, ForceMode.Impulse);
+        frontCollider.enabled = true;
+        backCollider.enabled = false;
+        arrowRB.AddForce(force,ForceMode.Impulse);
         //transform.rotation = Quaternion.LookRotation();
-        transform.SetParent(null);
+        //transform.SetParent(null);
+        ArrorDestroyer();
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -37,8 +36,11 @@ public class Arrow : MonoBehaviour
             arrowRB.isKinematic = true;
         }
     }
-       
-
+    public void InstantDestroy()
+    {
+        Destroy(gameObject);
+    }
+    
     public void ArrorDestroyer()
     {
         Destroy(gameObject,10f);
